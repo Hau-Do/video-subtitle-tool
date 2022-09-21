@@ -3,8 +3,10 @@ import './index.css';
 import 'video.js/dist/video-js.css';
 import useActions from './useActions';
 import VideoJS from '../../components/atoms/videoJS';
+import useVideoStore from 'stores/video.store';
 let time = 1000 * 45; // 2 minutes;
 function HomePage() {
+  const subtitles = useVideoStore((state) => state.subtitles);
   const {
     playerRef,
     handlePlayerReady,
@@ -14,11 +16,15 @@ function HomePage() {
     handleClickSubtitle,
     handleClickSave,
     results,
-  } = useActions({ time });
-  console.log('results', results);
+  } = useActions({ time, defaultSubtitles: subtitles });
   return (
     <div>
-      <VideoJS id="my-player" options={{}} onReady={handlePlayerReady}>
+      <VideoJS
+        subtitles={subtitles}
+        id="my-player"
+        options={{}}
+        onReady={handlePlayerReady}
+      >
         <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source>
         <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm"></source>
         <source src="//vjs.zencdn.net/v/oceans.ogv" type="video/ogg"></source>
@@ -45,5 +51,10 @@ function HomePage() {
     </div>
   );
 }
+
+<ul>
+  <li key={0}>first</li>
+  <li key={1}>second</li>
+</ul>;
 
 export default HomePage;

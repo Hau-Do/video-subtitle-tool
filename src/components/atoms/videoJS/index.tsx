@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ISubtitle } from 'stores/video.store';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
-
+import './index.css';
 interface IVideoJS {
   options: any;
   onReady: (player: any) => void;
   children: React.ReactNode;
+  subtitles?: ISubtitle[];
   [key: string]: any;
 }
 
 export const VideoJS: React.FC<IVideoJS> = (props) => {
   const videoRef = React.useRef(null);
   const playerRef = React.useRef<any>(null);
-  const { options, onReady, children, ...remainProps } = props;
-
+  const { options, onReady, children, subtitles, ...remainProps } = props;
+  const [idx, setIdx] = useState(-1);
+  const handleUpdateTime = (subtitles: any) => () => {
+    const currentTime = playerRef.current.currentTime();
+    if (subtitles && subtitles.length > 0) {
+      const idxFound = subtitles.findIndex((item: any) => {
+        const [start, end] = item.times;
+        return start <= currentTime && currentTime <= end;
+      });
+      setIdx(idxFound);
+    }
+  };
   React.useEffect(() => {
     if (!playerRef.current) {
       const videoElement = videoRef.current;
@@ -24,15 +36,15 @@ export const VideoJS: React.FC<IVideoJS> = (props) => {
         videojs.log('player is ready');
         onReady && onReady(player);
       }));
-
-      // You could update an existing player in the `else` block here
-      // on prop change, for example:
-    } else {
-      // const player = playerRef.current;
-      // player.autoplay(options.autoplay);
-      // player.src(options.sources);
     }
   }, [options, videoRef]);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.off('timeupdate', handleUpdateTime(subtitles));
+      playerRef.current.on('timeupdate', handleUpdateTime(subtitles));
+    }
+  }, [subtitles, playerRef.current]);
 
   // Dispose the Video.js player when the functional component unmounts
   React.useEffect(() => {
@@ -47,15 +59,20 @@ export const VideoJS: React.FC<IVideoJS> = (props) => {
   }, [playerRef]);
 
   return (
-    <video
-      {...remainProps}
-      controls
-      preload="auto"
-      ref={videoRef}
-      className="video-js vjs-big-play-centered"
-    >
-      {children}
-    </video>
+    <div className="videojs">
+      <video
+        {...remainProps}
+        controls
+        preload="auto"
+        ref={videoRef}
+        className="video-js vjs-big-play-centered"
+      >
+        {children}
+      </video>
+      {idx > -1 && subtitles?.[idx]?.text && (
+        <div id="video-subtitle">{subtitles?.[idx]?.text}</div>
+      )}
+    </div>
   );
 };
 

@@ -1,14 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
+import useVideoStore, { ISubtitle } from 'stores/video.store';
+import { convertTime } from 'utils/commons';
 
 import videojs from 'video.js';
-
-const useActions = ({ time }: any) => {
-  const [results, setResults] = useState<number[][]>([]);
-  const subtitles = useRef<number[][]>([]);
+interface IUseActionsProps {
+  time: number;
+  defaultSubtitles?: ISubtitle[];
+}
+const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
+  const setVideoState = useVideoStore((state) => state.setVideoState);
+  const [results, setResults] = useState<ISubtitle[]>([]);
+  const subtitles = useRef<number[][]>(
+    defaultSubtitles.map((item) => {
+      const [start, end] = item.times;
+      return [-(start * 60), -(end * 60)];
+    }) || []
+  );
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const lastX = useRef<number>(0);
-  const lastIdx = useRef<number>(0);
+  const lastIdx = useRef<number>(defaultSubtitles.length || 0);
   const activeIdx = useRef<number>(-1);
   const elementList = useRef<any>([]);
   const isFirstRender = useRef<boolean>(true);
@@ -68,34 +79,27 @@ const useActions = ({ time }: any) => {
     // ctx.restore()
   };
   const handleClickSave = () => {
-    console.log('subtitles.current', subtitles.current);
-    const results = subtitles.current.map(([start, end]: any) => {
-      return [-start / 60, -(end || lastX) / 60];
+    const results = subtitles.current.map(([start, end]: any, idx) => {
+      return {
+        text: defaultSubtitles?.[idx]?.text || '',
+        times: [-start / 60, -(end || lastX) / 60],
+      };
     });
-    setResults(results);
+
+    setResults(results.sort((a, b) => a.times[0] - b.times[0]));
+    console.log(
+      'results.sort((a, b) => a.times[0] - b.times[0])',
+      results.sort((a, b) => a.times[0] - b.times[0])
+    );
+    setVideoState({
+      subtitles: results,
+    });
   };
 
   const checkCloseEnough = (p1: number, p2: number) => {
     return Math.abs(p1 - p2) < closeEnough;
   };
 
-  const convertTime = (time: string | number) => {
-    let sec_num = parseInt(time.toString(), 10);
-    let hours: string | number = Math.floor(sec_num / 3600);
-    let minutes: string | number = Math.floor((sec_num - hours * 3600) / 60);
-    let seconds: string | number = sec_num - hours * 3600 - minutes * 60;
-
-    if (hours < 10) {
-      hours = '0' + hours;
-    }
-    if (minutes < 10) {
-      minutes = '0' + minutes;
-    }
-    if (seconds < 10) {
-      seconds = '0' + seconds;
-    }
-    return minutes + ':' + seconds;
-  };
   const drawCircle = (x: number, y: number, radius: number, ctx: any) => {
     ctx.fillStyle = '#FF0000';
     ctx.beginPath();
