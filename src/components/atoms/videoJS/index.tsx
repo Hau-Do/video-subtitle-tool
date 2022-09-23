@@ -66,6 +66,7 @@ export const VideoJS: React.FC<IVideoJS> = (props) => {
         preload="auto"
         ref={videoRef}
         className="video-js vjs-big-play-centered"
+        data-setup='{"fluid": true}'
       >
         {children}
       </video>
