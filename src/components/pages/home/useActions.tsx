@@ -16,6 +16,18 @@ const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
       return [-(start * 60), -(end * 60)];
     }) || []
   );
+  useEffect(() => {
+    const ctx = can.current.getContext('2d');
+
+    subtitles.current =
+      defaultSubtitles.map((item) => {
+        const [start, end] = item.times;
+        return [-(start * 60), -(end * 60)];
+      }) || [];
+    lastIdx.current = defaultSubtitles.length;
+    drawBG(ctx);
+  }, [defaultSubtitles]);
+
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const lastX = useRef<number>(0);

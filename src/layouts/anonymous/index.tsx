@@ -1,4 +1,4 @@
-import Header from 'components/modules/header';
+import Header from 'components/molecules/header';
 import React from 'react';
 
 interface IAnonymousLayout {

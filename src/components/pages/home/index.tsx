@@ -1,12 +1,28 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import './index.css';
 import 'video.js/dist/video-js.css';
 import useActions from './useActions';
-import VideoJS from '../../components/atoms/videoJS';
+import VideoJS from 'components/atoms/videoJS';
 import useVideoStore from 'stores/video.store';
+import SubtitleAPI from 'services/subtitle.service';
+import { SubtitlesDTO } from 'models/subtitle.model';
 let time = 1000 * 45; // 2 minutes;
 function HomePage() {
-  const subtitles = useVideoStore((state) => state.subtitles);
+  const { subtitles, setVideoState } = useVideoStore((state) => state);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response: any[] = await SubtitleAPI.getAll();
+        if (response) {
+          const subtitles = SubtitlesDTO(response || []);
+          setVideoState({
+            subtitles,
+          });
+        }
+      } catch (error) {}
+    })();
+  }, []);
+  console.log('subtitles', subtitles);
   const {
     playerRef,
     handlePlayerReady,
@@ -17,6 +33,7 @@ function HomePage() {
     handleClickSave,
     results,
   } = useActions({ time, defaultSubtitles: subtitles });
+
   return (
     <div>
       <VideoJS

@@ -1,5 +1,5 @@
 import VideoJS from 'components/atoms/videoJS';
-import Subtitle from 'components/modules/subtitle';
+import Subtitle from 'components/molecules/subtitle';
 import React, { useState } from 'react';
 import useVideoStore from 'stores/video.store';
 import useActions from './hooks/useActions';
