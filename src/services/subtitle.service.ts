@@ -1,14 +1,13 @@
-const getAll: () => Promise<any> = async () => {
-  return await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          times: [3, 5],
-          text: 'asdadad',
-        },
-      ]);
-    }, 1000);
+import API from 'api';
+import config from 'api/config';
+import Subtitle, { SubtitlesDTO } from 'models/subtitle.model';
+
+const getAll: () => Promise<Subtitle[]> = async () => {
+  const response = await API({
+    url: config.API.SUBTITLE_SERVICE,
   });
+  const subtitles = SubtitlesDTO(response);
+  return subtitles;
 };
 
 const SubtitleAPI = {

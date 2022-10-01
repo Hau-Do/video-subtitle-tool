@@ -1,7 +1,9 @@
 import { IAPIEndpoint, IConfig } from './api.d';
 
 const REACT_APP_API_URL =
-  process.env.REACT_APP_RESTFUL_ENDPOINT || 'http://localhost:3003';
+  process.env.REACT_APP_RESTFUL_ENDPOINT ||
+  // mock api postman
+  'https://ac15ee5c-49e0-46e5-ba23-8b5a01b63761.mock.pstmn.io';
 const config: IConfig = {
   API: {
     SUBTITLE_SERVICE: '/subtitles',
