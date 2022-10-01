@@ -1,8 +1,8 @@
 import API from 'api';
 import config from 'api/config';
-import Subtitle, { SubtitlesDTO } from 'models/subtitle.model';
+import { ISubtitle, SubtitlesDTO } from 'models/subtitle.model';
 
-const getAll: () => Promise<Subtitle[]> = async () => {
+const getAll: () => Promise<ISubtitle[]> = async () => {
   const response = await API({
     url: config.API.SUBTITLE_SERVICE,
   });
