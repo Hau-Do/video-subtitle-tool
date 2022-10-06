@@ -12,9 +12,8 @@ function HomePage() {
   useEffect(() => {
     (async () => {
       try {
-        const response: any[] = await SubtitleAPI.getAll();
-        if (response) {
-          const subtitles = SubtitlesDTO(response || []);
+        const subtitles = await SubtitleAPI.getAll();
+        if (subtitles) {
           setVideoState({
             subtitles,
           });
