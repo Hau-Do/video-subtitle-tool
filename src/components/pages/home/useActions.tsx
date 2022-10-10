@@ -4,10 +4,9 @@ import { convertTime } from 'utils/commons';
 
 import videojs from 'video.js';
 interface IUseActionsProps {
-  time: number;
   defaultSubtitles?: ISubtitle[];
 }
-const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
+const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
   const setVideoState = useVideoStore((state) => state.setVideoState);
   const [results, setResults] = useState<ISubtitle[]>([]);
   const subtitles = useRef<number[][]>(
@@ -36,7 +35,7 @@ const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
   const elementList = useRef<any>([]);
   const isFirstRender = useRef<boolean>(true);
   const can = useRef<any>(null);
-  let centerX = 500;
+  let centerX = window.innerWidth / 2;
   let closeEnough = 10;
   let w = window.innerWidth;
   let h = 200;
@@ -60,7 +59,11 @@ const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
 
     drawSubtitles(context, subtitles.current);
     context.fillStyle = 'black';
-    for (let i = 0; i <= time / 100; i += 10) {
+    for (
+      let i = 0;
+      i <= (playerRef.current?.duration * 1000 || 0) / 100;
+      i += 10
+    ) {
       const dx = centerX + i * 6;
       if (i % 50 === 0) {
         context.moveTo(dx, 50);
@@ -308,26 +311,26 @@ const useActions = ({ time, defaultSubtitles = [] }: IUseActionsProps) => {
     };
 
     init();
-  }, []);
+  }, [playerRef.current]);
   const handlePlayerReady = (player: any) => {
     playerRef.current = player;
     const ctx = can.current.getContext('2d');
-    videojs.log('Your player is ready!');
 
     playerRef.current.play();
 
-    playerRef.current.on('playing', function () {
+    playerRef.current.addEventListener('playing', function () {
       setIsPlaying(true);
     });
-    playerRef.current.on('pause', function () {
+    playerRef.current.addEventListener('pause', function () {
       setIsPlaying(false);
     });
-    playerRef.current.on('waiting', function () {
+    playerRef.current.addEventListener('waiting', function () {
       setIsPlaying(false);
     });
 
-    playerRef.current.on('seeked', () => {
-      const timeX = playerRef.current.currentTime() * 60;
+    playerRef.current.addEventListener('seeked', (e: any) => {
+      console.log('e.currentTime', e.target.currentTime);
+      const timeX = e.target.currentTime * 60;
       ctx.translate(-lastX.current, 0);
       ctx.translate(-timeX, 0);
       lastX.current = -timeX;

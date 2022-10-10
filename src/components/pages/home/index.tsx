@@ -21,7 +21,9 @@ function HomePage() {
       } catch (error) {}
     })();
   }, []);
+
   console.log('subtitles', subtitles);
+
   const {
     playerRef,
     handlePlayerReady,
@@ -31,39 +33,31 @@ function HomePage() {
     handleClickSubtitle,
     handleClickSave,
     results,
-  } = useActions({ time, defaultSubtitles: subtitles });
-
+  } = useActions({ defaultSubtitles: subtitles });
   return (
     <div>
       <VideoJS
         subtitles={subtitles}
         id="my-player"
-        options={{}}
         onReady={handlePlayerReady}
-      >
-        <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source>
-        <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm"></source>
-        <source src="//vjs.zencdn.net/v/oceans.ogv" type="video/ogg"></source>
-        <p className="vjs-no-js">
-          To view this video please enable JavaScript, and consider upgrading to
-          a web browser that
-        </p>
-      </VideoJS>
+      ></VideoJS>
       <div className="wrap">
         <div>
           <canvas ref={can} id="mycanvas"></canvas>
         </div>
       </div>
 
-      <button id="btn-play" onClick={handleClickPlay}>
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
-      <button id="btn-subtitle" onClick={handleClickSubtitle}>
-        Subtitle
-      </button>
-      <button id="btn-save" onClick={handleClickSave}>
-        Save
-      </button>
+      <div className="btns">
+        <button id="btn-play" onClick={handleClickPlay}>
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+        <button id="btn-subtitle" onClick={handleClickSubtitle}>
+          Subtitle
+        </button>
+        <button id="btn-save" onClick={handleClickSave}>
+          Save
+        </button>
+      </div>
     </div>
   );
 }

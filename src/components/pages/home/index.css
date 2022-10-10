@@ -31,21 +31,15 @@
     width:100%;
   } */
   
-  
+  .btns{
+    margin-top: 56px;
+  }
   #mycanvas {
     display: block;
     box-sizing: border-box;
     border: 1px solid hsl(259, 100%, 65%)
   }
-  #mycanvas2 {
-    display: block;
-    position: absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    box-sizing: border-box;
-  }
+
   
   .pointer {
     cursor: pointer;

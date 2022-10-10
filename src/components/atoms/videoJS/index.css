@@ -1,7 +1,13 @@
 .videojs{
     position: relative;
+    min-height: 600px;
 
 }
+#player, #player_html5_api{
+    width:100%;
+
+}
+
 .videojs #video-subtitle{
     position:absolute;
     bottom:60px;
