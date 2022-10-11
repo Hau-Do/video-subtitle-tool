@@ -29,6 +29,8 @@ function TranslatorPage() {
             subtitles={subtitles}
             options={{}}
             onReady={handlePlayerReady}
+            src="http://weverse.video.p.rmcnmv.naver.net/c/read/v2/VOD_ALPHA/weverse_2022_10_07_0/925baf22-460b-11ed-ab33-a0369ffdae2c.mp4?_lsu_sa_=68c599f9a1026ec6efdb45e76985d6bf3e933b68b10edfd33c271bc777b632b513221a526465630f90d73d32e239abfbb5fa72abf165658c591f4ba5bf9e9871c1e23f959428c9cc7482631367522037"
+            type="data"
           >
             <source
               src="//vjs.zencdn.net/v/oceans.mp4"

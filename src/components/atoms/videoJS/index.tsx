@@ -4,46 +4,44 @@ import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import './index.css';
 
-import PrismPlayer from '@webplayer/prismplayer-pc';
+import PrismPlayer, { DataProvider } from '@webplayer/prismplayer-pc';
 
 interface IVideoJS {
   options?: any;
-  onReady: (player: any) => void;
+  onReady: (player: HTMLVideoElement) => void;
   subtitles?: ISubtitle[];
+  src: string;
+  type: 'vod' | 'data' | 'live';
   [key: string]: any;
 }
 
 export const VideoJS: React.FC<IVideoJS> = (props) => {
   const videoRef = React.useRef<HTMLElement>(null);
   const playerRef = React.useRef<any>(null);
-  const { options, onReady, children, subtitles, ...remainProps } = props;
+  const { options, onReady, children, subtitles, src, type, ...remainProps } =
+    props;
   const [idx, setIdx] = useState(-1);
-  const handleUpdateTime = (subtitles: any) => (e: any) => {
+  const handleUpdateTime = (subtitles: ISubtitle[]) => (e: any) => {
     const currentTime = e.target.currentTime;
     if (subtitles && subtitles.length > 0) {
-      const idxFound = subtitles.findIndex((item: any) => {
+      const idxFound = subtitles.findIndex((item) => {
         const [start, end] = item.times;
         return start <= currentTime && currentTime <= end;
       });
       setIdx(idxFound);
     }
   };
-  useEffect(() => {
-    if (playerRef.current) {
-      onReady && onReady(playerRef.current);
-    }
-  }, [options, playerRef.current]);
 
   useEffect(() => {
     if (playerRef.current) {
       playerRef.current.removeEventListener(
         'timeupdate',
-        handleUpdateTime(subtitles),
+        handleUpdateTime(subtitles!),
         true
       );
       playerRef.current.addEventListener(
         'timeupdate',
-        handleUpdateTime(subtitles),
+        handleUpdateTime(subtitles!),
         true
       );
     }
@@ -57,7 +55,7 @@ export const VideoJS: React.FC<IVideoJS> = (props) => {
       if (player) {
         playerRef.current.removeEventListener(
           'timeupdate',
-          handleUpdateTime(subtitles),
+          handleUpdateTime(subtitles!),
           true
         );
         playerRef.current = null;
@@ -66,12 +64,38 @@ export const VideoJS: React.FC<IVideoJS> = (props) => {
   }, [playerRef.current]);
 
   useEffect(() => {
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.pause();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (videoRef.current) {
       playerRef.current = PrismPlayer.upgrade(videoRef.current);
-      playerRef.current.src =
-        'vod://27001:V125f19c7e6a0577ab92fc2262953fcca04ad38960d0c728ff255c2262953fcca04ad@A7D002E08A5793B083F3539917A6A68D3809?env=dev';
+      if (type === 'data') {
+        const dataProvider = new DataProvider({
+          videoTracks: [
+            {
+              src, // 재생 URL required
+              width: 1280, // 가로 (px) required
+              height: 720, // 세로 (px) required
+              duration: 300, // 영상길이 (단위: 초) // optional 기본값은 Infinity
+              selected: true, // 기본 선택 해상도 optional 없을 경우 0번 video가 선택됩니다.
+              label: 'optional-label', // optional
+              id: 'optional-track-id', // optional
+            },
+          ],
+        });
+        playerRef.current.srcObject = dataProvider;
+      }
+      if (type === 'vod') {
+        playerRef.current.src = src;
+      }
     }
-  }, [videoRef.current]);
+    onReady && onReady(playerRef.current);
+  }, [videoRef.current, type]);
 
   return (
     <div className="videojs">

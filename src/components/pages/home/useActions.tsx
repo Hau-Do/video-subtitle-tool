@@ -1,10 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import useVideoStore, { ISubtitle } from 'stores/video.store';
 import { convertTime } from 'utils/commons';
-
+import PrismPlayer from '@webplayer/prismplayer-pc';
 import videojs from 'video.js';
 interface IUseActionsProps {
   defaultSubtitles?: ISubtitle[];
+}
+interface IElement {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  ellipse: Path2D;
+  isDragging: boolean;
+  subtitles: number[];
 }
 const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
   const setVideoState = useVideoStore((state) => state.setVideoState);
@@ -16,30 +25,38 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     }) || []
   );
   useEffect(() => {
-    const ctx = can.current.getContext('2d');
+    if (can.current) {
+      const ctx = can.current.getContext('2d');
 
-    subtitles.current =
-      defaultSubtitles.map((item) => {
-        const [start, end] = item.times;
-        return [-(start * 60), -(end * 60)];
-      }) || [];
-    lastIdx.current = defaultSubtitles.length;
-    drawBG(ctx);
+      subtitles.current =
+        defaultSubtitles.map((item) => {
+          const [start, end] = item.times;
+          return [-(start * 60), -(end * 60)];
+        }) || [];
+      lastIdx.current = defaultSubtitles.length;
+      ctx && drawBG(ctx);
+    }
   }, [defaultSubtitles]);
 
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const lastX = useRef<number>(0);
   const lastIdx = useRef<number>(defaultSubtitles.length || 0);
   const activeIdx = useRef<number>(-1);
-  const elementList = useRef<any>([]);
+  const elementList = useRef<IElement[]>([]);
   const isFirstRender = useRef<boolean>(true);
-  const can = useRef<any>(null);
+  const can = useRef<HTMLCanvasElement>(null);
   let centerX = window.innerWidth / 2;
   let closeEnough = 10;
   let w = window.innerWidth;
   let h = 200;
   let dx = 1;
+
+  useEffect(() => {
+    return () => {
+      setIsPlaying(false);
+    };
+  }, []);
 
   const drawBG = (context: CanvasRenderingContext2D) => {
     context.save();
@@ -61,7 +78,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     context.fillStyle = 'black';
     for (
       let i = 0;
-      i <= (playerRef.current?.duration * 1000 || 0) / 100;
+      i <= ((playerRef.current?.duration || 0) * 1000 || 0) / 100;
       i += 10
     ) {
       const dx = centerX + i * 6;
@@ -94,7 +111,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     // ctx.restore()
   };
   const handleClickSave = () => {
-    const results = subtitles.current.map(([start, end]: any, idx) => {
+    const results = subtitles.current.map(([start, end]: number[], idx) => {
       return {
         text: defaultSubtitles?.[idx]?.text || '',
         times: [-start / 60, -(end || lastX) / 60],
@@ -115,18 +132,26 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     return Math.abs(p1 - p2) < closeEnough;
   };
 
-  const drawCircle = (x: number, y: number, radius: number, ctx: any) => {
+  const drawCircle = (
+    x: number,
+    y: number,
+    radius: number,
+    ctx: CanvasRenderingContext2D
+  ) => {
     ctx.fillStyle = '#FF0000';
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();
   };
-  const drawHandles = (rect: any, ctx: any) => {
+  const drawHandles = (rect: any, ctx: CanvasRenderingContext2D) => {
     drawCircle(rect.x + rect.width, rect.y + rect.height / 2, closeEnough, ctx);
     drawCircle(rect.x, rect.y + rect.height / 2, closeEnough, ctx);
   };
-  const convertSubtitlesToElements = (subtitles: any, ctx: any) => {
-    const elements = [];
+  const convertSubtitlesToElements: (
+    subtitles: number[][],
+    ctx: CanvasRenderingContext2D
+  ) => IElement[] = (subtitles: number[][], ctx: CanvasRenderingContext2D) => {
+    const elements: IElement[] = [];
     for (let i = 0; i < subtitles.length; i++) {
       const x = centerX - subtitles[i][0];
       const endTime = centerX - (subtitles[i][1] || lastX.current);
@@ -170,27 +195,30 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
   };
   const handleClickPlay = () => {
     if (isPlaying) {
-      playerRef.current.pause();
+      playerRef.current!.pause();
     } else {
-      playerRef.current.play();
+      playerRef.current!.play();
     }
   };
-  const drawSubtitles = (ctx: CanvasRenderingContext2D, subtitles: any) => {
+  const drawSubtitles = (
+    ctx: CanvasRenderingContext2D,
+    subtitles: number[][]
+  ) => {
     ctx.beginPath();
     elementList.current = convertSubtitlesToElements(subtitles, ctx);
     ctx.closePath();
     ctx.stroke();
   };
   useEffect(() => {
-    let BB = can.current.getBoundingClientRect();
+    let BB = can.current!.getBoundingClientRect();
     let offsetX = BB.left;
-    let ctx = can.current.getContext('2d'),
+    let ctx = can.current!.getContext('2d'),
       dragOK: boolean,
       startX: number,
       dragL: boolean,
       dragR: boolean;
 
-    can.current.width = window.innerWidth;
+    can.current!.width = window.innerWidth;
 
     const myDown = (e: any) => {
       e.preventDefault();
@@ -202,7 +230,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
       dragOK = false;
       for (var i = 0; i < elementList.current.length; i++) {
         var r = elementList.current[i];
-        if (r.ellipse && ctx.isPointInPath(r.ellipse, e.offsetX, e.offsetY)) {
+        if (r.ellipse && ctx!.isPointInPath(r.ellipse, e.offsetX, e.offsetY)) {
           // if yes, set that elementList isDragging=true
           activeIdx.current = i;
           dragOK = true;
@@ -243,7 +271,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
         subtitles.current[activeIdx.current] = [updatedStart, updatedEnd];
 
         // redraw the scene with the new rect positions
-        drawBG(ctx);
+        drawBG(ctx!);
 
         // reset the starting mouse position for the next mousemove
         startX = mx;
@@ -282,39 +310,39 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
           if (start < end) start = end + 5;
         }
         subtitles.current[activeIdx.current] = [start, end];
-        drawBG(ctx);
+        drawBG(ctx!);
         startX = mx;
       }
     };
     const init = () => {
-      ctx.save();
+      ctx!.save();
 
-      ctx.fillRect(0, 0, w * 1000, h);
+      ctx!.fillRect(0, 0, w * 1000, h);
 
-      ctx.fillStyle = 'black';
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'gray';
-      ctx.beginPath();
-      ctx.moveTo(20, 0);
-      ctx.lineTo(20, 180);
-      ctx.stroke();
-      elementList.current = convertSubtitlesToElements(subtitles.current, ctx);
-      draw(ctx);
-      ctx.restore();
+      ctx!.fillStyle = 'black';
+      ctx!.lineWidth = 1;
+      ctx!.strokeStyle = 'gray';
+      ctx!.beginPath();
+      ctx!.moveTo(20, 0);
+      ctx!.lineTo(20, 180);
+      ctx!.stroke();
+      elementList.current = convertSubtitlesToElements(subtitles.current, ctx!);
+      draw(ctx!);
+      ctx!.restore();
 
-      can.current.addEventListener('mousedown', myDown);
-      can.current.addEventListener('mousedown', mouseDown);
-      can.current.addEventListener('mouseup', myUp);
-      can.current.addEventListener('mouseup', mouseUp);
-      can.current.addEventListener('mousemove', myMove);
-      can.current.addEventListener('mousemove', mouseMove);
+      can.current!.addEventListener('mousedown', myDown);
+      can.current!.addEventListener('mousedown', mouseDown);
+      can.current!.addEventListener('mouseup', myUp);
+      can.current!.addEventListener('mouseup', mouseUp);
+      can.current!.addEventListener('mousemove', myMove);
+      can.current!.addEventListener('mousemove', mouseMove);
     };
 
     init();
-  }, [playerRef.current]);
-  const handlePlayerReady = (player: any) => {
+  }, [playerRef]);
+  const handlePlayerReady = (player: HTMLVideoElement) => {
     playerRef.current = player;
-    const ctx = can.current.getContext('2d');
+    const ctx = can.current!.getContext('2d');
 
     playerRef.current.play();
 
@@ -329,36 +357,40 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     });
 
     playerRef.current.addEventListener('seeked', (e: any) => {
-      console.log('e.currentTime', e.target.currentTime);
       const timeX = e.target.currentTime * 60;
-      ctx.translate(-lastX.current, 0);
-      ctx.translate(-timeX, 0);
+      ctx!.translate(-lastX.current, 0);
+      ctx!.translate(-timeX, 0);
       lastX.current = -timeX;
-      drawBG(ctx);
+      drawBG(ctx!);
     });
   };
   useEffect(() => {
     const fps = 1000 / 60;
-    const ctx = can.current.getContext('2d');
-    let interval: any = null;
+    const ctx = can.current!.getContext('2d');
+    // if (isFirstRender.current) clearInterval(interval.current);
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (isFirstRender.current) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         isFirstRender.current = false;
         interval = setInterval(() => {
           if (isPlaying) {
-            draw(ctx);
+            draw(ctx!);
           }
         }, fps);
       }, 300);
     } else {
       interval = setInterval(() => {
         if (isPlaying) {
-          draw(ctx);
+          draw(ctx!);
         }
       }, fps);
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      interval && clearInterval(interval);
+      timeout && clearTimeout(timeout);
+    };
   }, [isPlaying]);
 
   return {

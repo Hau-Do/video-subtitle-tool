@@ -3,14 +3,18 @@ export interface ISubtitle {
   text: string;
 }
 
-function Subtitle(data: any): ISubtitle {
+interface IData {
+  [name: string]: any;
+}
+
+function Subtitle(data: IData): ISubtitle {
   return {
     times: data?.times || [],
     text: data?.text || '',
   };
 }
 
-export const SubtitlesDTO = (arr: any[]) => {
+export const SubtitlesDTO = (arr: IData[]) => {
   return arr.map((item) => Subtitle(item));
 };
 

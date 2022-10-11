@@ -7,7 +7,7 @@ export interface ISubtitle {
 
 interface IVideoState {
   subtitles: ISubtitle[];
-  setVideoState: (value?: any) => void;
+  setVideoState: <T>(value?: T) => void;
 }
 
 const useVideoStore = create<IVideoState>((set) => ({
