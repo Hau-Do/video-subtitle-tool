@@ -4,25 +4,23 @@ import 'video.js/dist/video-js.css';
 import useActions from './useActions';
 import VideoJS from 'components/atoms/videoJS';
 import useVideoStore from 'stores/video.store';
-import SubtitleAPI from 'services/subtitle.service';
-import { SubtitlesDTO } from 'models/subtitle.model';
-let time = 1000 * 45; // 2 minutes;
+import SubtitleService from 'services/subtitle.service';
 function HomePage() {
-  const { subtitles, setVideoState } = useVideoStore((state) => state);
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const subtitles = await SubtitleAPI.getAll();
-  //       if (subtitles) {
-  //         setVideoState({
-  //           subtitles,
-  //         });
-  //       }
-  //     } catch (error) {}
-  //   })();
-  // }, []);
 
-  console.log('subtitles', subtitles);
+  const { subtitles, setVideoState } = useVideoStore((state) => state);
+  
+  useEffect(() => {
+    (async () => {
+      try {
+        const subtitles = await SubtitleService.getSubtitles();
+        if (subtitles) {
+          setVideoState({
+            subtitles,
+          });
+        }
+      } catch (error) {}
+    })();
+  }, []);
 
   const {
     playerRef,

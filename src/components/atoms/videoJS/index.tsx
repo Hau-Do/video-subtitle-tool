@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ISubtitle } from 'stores/video.store';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import { ISubtitle } from 'interfaces/subtitle';
+import React, { useEffect, useState, useMemo } from 'react';
+// import 'video.js/dist/video-js.css';
 import './index.css';
 
 import PrismPlayer, { DataProvider } from '@webplayer/prismplayer-pc';

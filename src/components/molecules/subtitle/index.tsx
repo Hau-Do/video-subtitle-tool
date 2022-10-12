@@ -1,5 +1,5 @@
+import { ISubtitle } from 'interfaces/subtitle';
 import React, { ChangeEvent } from 'react';
-import { ISubtitle } from 'stores/video.store';
 import { convertTime } from 'utils/commons';
 import useActions from './hooks/useActions';
 import './index.css';

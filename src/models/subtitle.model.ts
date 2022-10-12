@@ -1,21 +1,18 @@
-export interface ISubtitle {
-  times: number[];
-  text: string;
-}
+import { IData } from "interfaces/data";
+import { ISubtitle } from "interfaces/subtitle";
 
-interface IData {
-  [name: string]: any;
-}
-
-function Subtitle(data: IData): ISubtitle {
+const Subtitle = (item: IData): ISubtitle => {
   return {
-    times: data?.times || [],
-    text: data?.text || '',
+    id: item?.id,
+    times: item?.times || [],
+    text: item?.text || '',
   };
 }
 
-export const SubtitlesDTO = (arr: IData[]) => {
-  return arr.map((item) => Subtitle(item));
+const Subtitles = (items: IData[]): ISubtitle[] => {
+  return items.map((item) => Subtitle(item));
 };
 
-export default Subtitle;
+export {
+  Subtitles
+};

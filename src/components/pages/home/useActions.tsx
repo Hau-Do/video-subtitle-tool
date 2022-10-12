@@ -1,8 +1,8 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react';
-import useVideoStore, { ISubtitle } from 'stores/video.store';
+import { ISubtitle } from 'interfaces/subtitle';
+import { useEffect, useRef, useState } from 'react';
+import useVideoStore from 'stores/video.store';
 import { convertTime } from 'utils/commons';
 import PrismPlayer from '@webplayer/prismplayer-pc';
-import videojs from 'video.js';
 interface IUseActionsProps {
   defaultSubtitles?: ISubtitle[];
 }

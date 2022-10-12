@@ -1,10 +1,5 @@
+import { ISubtitle } from 'interfaces/subtitle';
 import create from 'zustand';
-
-export interface ISubtitle {
-  text: string;
-  times: number[];
-}
-
 interface IVideoState {
   subtitles: ISubtitle[];
   setVideoState: <T>(value?: T) => void;
