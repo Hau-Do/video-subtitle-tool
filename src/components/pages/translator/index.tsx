@@ -29,7 +29,7 @@ function TranslatorPage() {
             subtitles={subtitles}
             options={{}}
             onReady={handlePlayerReady}
-            src="http://weverse.video.p.rmcnmv.naver.net/c/read/v2/VOD_ALPHA/weverse_2022_10_07_0/925baf22-460b-11ed-ab33-a0369ffdae2c.mp4?_lsu_sa_=68c599f9a1026ec6efdb45e76985d6bf3e933b68b10edfd33c271bc777b632b513221a526465630f90d73d32e239abfbb5fa72abf165658c591f4ba5bf9e9871c1e23f959428c9cc7482631367522037"
+            src="http://weverse.video.p.rmcnmv.naver.net/c/read/v2/VOD_ALPHA/weverse_2022_10_07_0/925baf22-460b-11ed-ab33-a0369ffdae2c.mp4?_lsu_sa_=62b579f6f1b96c16a4dc750e6b0506b4fe4336981005dfbe35174ac6470e321593215a966c258b07c05b35f2d7313bedc241d449ed151ae3a86ecbda8d29d7370f48b6355c95358e2226ea2205e4123e"
             type="data"
           >
             <source
