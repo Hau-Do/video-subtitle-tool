@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import './index.css';
+import stylesHome from './home.module.scss';
 import 'video.js/dist/video-js.css';
 import useActions from './useActions';
 import VideoJS from 'components/atoms/videoJS';
@@ -45,13 +45,13 @@ function HomePage() {
           //'vod://27001:V125f19c7e6a0577ab92fc2262953fcca04ad38960d0c728ff255c2262953fcca04ad@563C02F842EC4770E5CB6AC265F0176E6ECC?env=dev'
         }
       ></VideoJS>
-      <div className="wrap">
+      <div className={stylesHome.wrap}>
         <div>
           <canvas ref={can} id="mycanvas"></canvas>
         </div>
       </div>
 
-      <div className="btns">
+      <div className={stylesHome.btns_container}>
         <button id="btn-subtitle" onClick={handleClickSubtitle}>
           Subtitle
         </button>
