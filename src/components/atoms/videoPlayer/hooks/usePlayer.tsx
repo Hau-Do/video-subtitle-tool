@@ -47,7 +47,7 @@ const usePlayer = ({ onReady, subtitles, src, type }: IUsePlayer) => {
         playerRef.current = null;
       }
     };
-  }, [subtitles, playerRef.current]);
+  }, [subtitles]);
 
   useEffect(() => {
     return () => {
@@ -83,7 +83,8 @@ const usePlayer = ({ onReady, subtitles, src, type }: IUsePlayer) => {
     onReady &&
       playerRef.current &&
       onReady(playerRef.current as HTMLVideoElement);
-  }, [videoRef.current, type]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
 
   return { idx, videoRef, playerRef };
 };

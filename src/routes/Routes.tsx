@@ -15,7 +15,7 @@ const renderRoutes: Function = (routes: IRoutes[]) => {
               key={`routes-${idx}`}
               path={route.path}
               exact={route.exact}
-              render={(props: any) => (
+              render={(props: Record<string, any>) => (
                 <Guard>
                   <Layout>
                     {route.routes && route.routes.length > 0 ? (

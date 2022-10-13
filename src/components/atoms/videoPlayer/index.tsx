@@ -1,5 +1,5 @@
 import { ISubtitle } from 'interfaces/subtitle';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import usePlayer from './hooks/usePlayer';
 import stylesVideo from './videoPlayer.module.scss';
 
@@ -28,9 +28,9 @@ export const VideoPlayer: React.FC<IVideoPlayer> = (props) => {
             </pzp-pc-header>
             <pzp-ad-click-through-button class="pzp-pc__ad-click-through-button"></pzp-ad-click-through-button>
           </pzp-pc-layout>
-        ),
-        []
-      )}
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ), [])
+      }
       {idx > -1 && subtitles?.[idx]?.text && (
         <div className={stylesVideo.videoSubtitle}>
           {subtitles?.[idx]?.text}

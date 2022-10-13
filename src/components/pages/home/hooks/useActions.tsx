@@ -44,6 +44,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
       lastIdx.current = defaultSubtitles.length;
       ctx && drawBG(ctx);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultSubtitles]);
 
   const playerRef = useRef<HTMLVideoElement | null>(null);
@@ -59,7 +60,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
   let w = window.innerWidth;
   let h = 200;
   let dx = 1;
-  console.log('lastX', lastX);
+
   useEffect(() => {
     return () => {
       setIsPlaying(false);
@@ -207,6 +208,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
       playerRef.current?.play();
     }
   };
+
   const drawSubtitles = (
     ctx: CanvasRenderingContext2D,
     subtitles: number[][]
@@ -216,6 +218,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     ctx.closePath();
     ctx.stroke();
   };
+
   useEffect(() => {
     let BB = can.current!.getBoundingClientRect();
     let offsetX = BB.left;
@@ -346,7 +349,9 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     };
 
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerRef]);
+
   const handlePlayerReady = (player: HTMLVideoElement) => {
     playerRef.current = player;
     const ctx = can.current!.getContext('2d');
@@ -371,24 +376,25 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
       drawBG(ctx!);
     });
   };
+
   useEffect(() => {
     const ctx = can.current!.getContext('2d');
     let fpsInterval: number, now, then: number, elapsed;
     if (isPlaying) {
       startAnimating(fps);
     }
+
     function startAnimating(fps: number) {
       fpsInterval = 1000 / fps;
       then = Date.now();
       animate();
     }
+
     function animate() {
       if (!isPlaying) {
         return;
       }
-
       requestRef.current = requestAnimationFrame(animate);
-
       now = Date.now();
       elapsed = now - then;
 
@@ -401,6 +407,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     return () => {
       requestRef.current && cancelAnimationFrame(requestRef.current);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying]);
 
   return {

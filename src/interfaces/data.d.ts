@@ -1,3 +1,3 @@
 export interface IData {
-    [property: string]: any
+    [key: string]: any
 };

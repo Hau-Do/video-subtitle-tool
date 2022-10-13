@@ -13,4 +13,5 @@ const getSubtitles: () => Promise<ISubtitle[]> = async() => {
 const SubtitleService = {
   getSubtitles,
 };
+
 export default SubtitleService;
