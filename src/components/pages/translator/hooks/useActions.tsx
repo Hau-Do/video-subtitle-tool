@@ -3,8 +3,7 @@ import useVideoStore from 'stores/video.store';
 
 function useActions() {
   const { subtitles, setVideoState } = useVideoStore();
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<HTMLVideoElement | null>(null);
 
   const handleChangeSubtitle = (idx: number) => (text: string) => {
     const updatedSubtitles = [...subtitles];
@@ -14,10 +13,10 @@ function useActions() {
       subtitles: updatedSubtitles,
     });
   };
-  const handlePlayerReady = (player: any) => {
+  const handlePlayerReady = (player: HTMLVideoElement) => {
     playerRef.current = player;
   };
-  return { subtitles, activeIndex, handleChangeSubtitle, handlePlayerReady };
+  return { subtitles, handleChangeSubtitle, handlePlayerReady };
 }
 
 export default useActions;
