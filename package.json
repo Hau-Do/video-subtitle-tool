@@ -27,7 +27,7 @@
     "zustand": "^4.1.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "nodemon -w craco.config.js -w ./src/theme/vars.scss -w ./src/theme/vars.less --exec \"craco start --config craco.config.js\"",
     "build": "craco build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "craco test",
@@ -54,6 +54,7 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
     "@types/video.js": "^7.3.47",
+    "nodemon": "^2.0.20",
     "source-map-explorer": "^2.5.3"
   }
 }
