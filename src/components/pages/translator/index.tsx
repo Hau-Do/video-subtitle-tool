@@ -16,8 +16,8 @@ function TranslatorPage() {
     });
   return (
     <div className={translatorStyles.translator}>
-      <div className={translatorStyles.translator__container}>
-        <div className={translatorStyles.translator__video}>
+      <div className={translatorStyles.translator_container}>
+        <div className={translatorStyles.translator_video}>
           <VideoPlayer
             subtitles={subtitles}
             options={{}}
@@ -26,7 +26,7 @@ function TranslatorPage() {
             type="data"
           />
         </div>
-        <div className={translatorStyles.translator__subtitles}>
+        <div className={translatorStyles.translator_subtitles}>
           {renderSubtitles()}
         </div>
       </div>

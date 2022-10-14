@@ -2,8 +2,9 @@ import stylesHome from './home.module.scss';
 import useActions from './hooks/useActions';
 import VideoPlayer from 'components/atoms/videoPlayer';
 import useVideoStore from 'stores/video.store';
-import SubtitleService from 'services/subtitle.service';
 import { useEffect } from 'react';
+import { Button } from 'antd';
+import SubtitleService from 'services/subtitle.service';
 
 function HomePage() {
   const { subtitles, setVideoState } = useVideoStore((state) => state);
@@ -39,12 +40,12 @@ function HomePage() {
       </div>
 
       <div className={stylesHome.btns_container}>
-        <button id="btn-subtitle" onClick={handleClickSubtitle}>
+        <Button id="btn-subtitle" onClick={handleClickSubtitle}>
           Subtitle
-        </button>
-        <button id="btn-save" onClick={handleClickSave}>
+        </Button>
+        <Button id="btn-save" onClick={handleClickSave}>
           Save
-        </button>
+        </Button>
       </div>
     </div>
   );
