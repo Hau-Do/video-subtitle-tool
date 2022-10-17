@@ -1,20 +1,20 @@
-import { ISubtitle } from 'interfaces/subtitle';
-import React, { useMemo } from 'react';
-import usePlayer from './hooks/usePlayer';
-import stylesVideo from './videoPlayer.module.scss';
+import { ISubtitle } from 'interfaces/subtitle'
+import React, { useMemo } from 'react'
+import useLifecycleOperations from './hooks/useLifecycleOperations'
+import stylesVideo from './videoPlayer.module.scss'
 
 interface IVideoPlayer {
-  options?: object;
-  onReady: (player: HTMLVideoElement) => void;
-  subtitles?: ISubtitle[];
-  src: string;
-  type: 'vod' | 'data' | 'live';
-  [key: string]: any;
+  options?: object
+  onReady: (player: HTMLVideoElement) => void
+  subtitles?: ISubtitle[]
+  src: string
+  type: 'vod' | 'data' | 'live'
+  [key: string]: any
 }
 
 export const VideoPlayer: React.FC<IVideoPlayer> = (props) => {
-  const { idx, videoRef } = usePlayer(props);
-  const { subtitles } = props;
+  const { idx, videoRef } = useLifecycleOperations(props)
+  const { subtitles } = props
   return (
     <div className={stylesVideo.videoPlayer}>
       {useMemo(
@@ -28,16 +28,14 @@ export const VideoPlayer: React.FC<IVideoPlayer> = (props) => {
             </pzp-pc-header>
             <pzp-ad-click-through-button class="pzp-pc__ad-click-through-button"></pzp-ad-click-through-button>
           </pzp-pc-layout>
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        ), [])
-      }
+        ),
+        []
+      )}
       {idx > -1 && subtitles?.[idx]?.text && (
-        <div className={stylesVideo.videoSubtitle}>
-          {subtitles?.[idx]?.text}
-        </div>
+        <div className={stylesVideo.videoSubtitle}>{subtitles?.[idx]?.text}</div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(VideoPlayer);
+export default React.memo(VideoPlayer)

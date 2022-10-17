@@ -1,19 +1,13 @@
-import VideoPlayer from 'components/atoms/videoPlayer';
-import Subtitle from 'components/molecules/subtitle';
-import useActions from './hooks/useActions';
-import translatorStyles from './translator.module.scss';
+import VideoPlayer from 'components/atoms/videoPlayer'
+import Subtitle from 'components/molecules/subtitle'
+import useEventHandlers from './hooks/useEventHandlers'
+import translatorStyles from './translator.module.scss'
 function TranslatorPage() {
-  const { subtitles, handleChangeSubtitle, handlePlayerReady } = useActions();
+  const { subtitles, handleChangeSubtitle, handlePlayerReady } = useEventHandlers()
   const renderSubtitles = () =>
     subtitles.map((item, idx) => {
-      return (
-        <Subtitle
-          key={idx}
-          handleSave={handleChangeSubtitle(idx)}
-          subtitle={item}
-        />
-      );
-    });
+      return <Subtitle key={idx} handleSave={handleChangeSubtitle(idx)} subtitle={item} />
+    })
   return (
     <div className={translatorStyles.translator}>
       <div className={translatorStyles.translator_container}>
@@ -26,12 +20,10 @@ function TranslatorPage() {
             type="data"
           />
         </div>
-        <div className={translatorStyles.translator_subtitles}>
-          {renderSubtitles()}
-        </div>
+        <div className={translatorStyles.translator_subtitles}>{renderSubtitles()}</div>
       </div>
     </div>
-  );
+  )
 }
 
-export default TranslatorPage;
+export default TranslatorPage

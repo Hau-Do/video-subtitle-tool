@@ -1,28 +1,32 @@
-import stylesHome from './home.module.scss';
-import useActions from './hooks/useActions';
-import VideoPlayer from 'components/atoms/videoPlayer';
-import useVideoStore from 'stores/video.store';
-import { useEffect } from 'react';
-import { Button } from 'antd';
-import SubtitleService from 'services/subtitle.service';
+import stylesHome from './home.module.scss'
+import VideoPlayer from 'components/atoms/videoPlayer'
+import useVideoStore from 'stores/video.store'
+import { useEffect } from 'react'
+import { Button } from 'antd'
+import SubtitleService from 'services/subtitle.service'
+import useLifecycleOperations from './hooks/useLifecycleOperations'
 
 function HomePage() {
-  const { subtitles, setVideoState } = useVideoStore((state) => state);
+  const { subtitles, setVideoState } = useVideoStore((state) => state)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
-        const subtitles = await SubtitleService.getSubtitles();
+        const subtitles = await SubtitleService.getSubtitles()
         if (subtitles) {
           setVideoState({
-            subtitles,
-          });
+            subtitles
+          })
         }
-      } catch (error) {}
-    })();
-  }, []);
+      } catch (error) {
+        console.log('error', error)
+      }
+    })()
+  }, [])
 
-  const { handlePlayerReady, can, handleClickSubtitle, handleClickSave } = useActions({ defaultSubtitles: subtitles });
+  const { handlePlayerReady, can, handleClickSubtitle, handleClickSave } = useLifecycleOperations({
+    defaultSubtitles: subtitles
+  })
 
   return (
     <div>
@@ -48,12 +52,12 @@ function HomePage() {
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-<ul>
+;<ul>
   <li key={0}>first</li>
   <li key={1}>second</li>
-</ul>;
+</ul>
 
-export default HomePage;
+export default HomePage
