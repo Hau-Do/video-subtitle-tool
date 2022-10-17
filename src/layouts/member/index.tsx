@@ -1,17 +1,16 @@
 import Header from 'components/molecules/header'
 import React from 'react'
 
-interface IAnonymousLayout {
+interface IMemberLayout {
   children?: React.ReactNode
 }
-const AnonymousLayout: React.FC<IAnonymousLayout> = ({ children }) => {
+const MemberLayout: React.FC<IMemberLayout> = ({ children }) => {
   return (
     <div>
-      Anonymous layout
       <Header />
       {children}
     </div>
   )
 }
 
-export default AnonymousLayout
+export default MemberLayout

@@ -1,3 +1,3 @@
 export const ENDPOINT = {
-    SUBTITLES: '/subtitles'
-};
+  SUBTITLES: '/subtitles'
+}
