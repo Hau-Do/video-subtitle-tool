@@ -2,7 +2,7 @@ import { ISubtitle } from 'interfaces/subtitle';
 import React, { ChangeEvent } from 'react';
 import { convertTime } from 'utils/commons';
 import useActions from './hooks/useActions';
-import subtitleStyles from './subtitle.module.scss';
+import subtitleStyles from './Subtitle.module.scss';
 interface ISubtitleProps {
   subtitle: ISubtitle;
   handleSave: (text: string) => void;

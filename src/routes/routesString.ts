@@ -1,10 +1,8 @@
 export const RoutesString = {
-  MemberLayout: '/',
-  AnonymousLayout: '/auth',
   Home: '/',
+  Timebar: '/timebar',
   Translator: '/translator',
-  Auth: '/auth',
   Error: '/error',
-  NotFound: '/error/404',
+  NotFound: '/error/not-found',
   AccessDenied: '/error/access-denied'
 }

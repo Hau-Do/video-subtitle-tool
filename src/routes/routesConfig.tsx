@@ -3,17 +3,17 @@ import { Redirect } from 'react-router-dom'
 import { IRoutes } from './Routes.d'
 import { RoutesString } from './routesString'
 
-const HomePage = lazy(() => import('components/pages/home'))
-const TranslatorPage = lazy(() => import('components/pages/translator'))
-const MemberLayout = lazy(() => import('layouts/member'))
-const AnonymousLayout = lazy(() => import('layouts/anonymous'))
-const MemberGuard = lazy(() => import('guards/member'))
-const ErrorNotFoundPage = lazy(() => import('components/pages/errors/notFound'))
-const ErrorAccessDeniedPage = lazy(() => import('components/pages/errors/accessDenied'))
+const PrivateLayout = lazy(() => import('layouts/PrivateLayout'))
+const ErrorLayout = lazy(() => import('layouts/ErrorLayout'))
+const TimebarPage = lazy(() => import('components/pages/TimebarPage'))
+const TranslatorPage = lazy(() => import('components/pages/TranslatorPage'))
+const ErrorNotFoundPage = lazy(() => import('components/pages/Errors/NotFoundPage'))
+const ErrorAccessDeniedPage = lazy(() => import('components/pages/Errors/AccessDeniedPage'))
+const Guard = lazy(() => import('guards'))
 
 export const routesConfig: IRoutes[] = [
   {
-    layout: AnonymousLayout,
+    layout: ErrorLayout,
     path: RoutesString.Error,
     routes: [
       {
@@ -29,13 +29,18 @@ export const routesConfig: IRoutes[] = [
     ]
   },
   {
-    path: RoutesString.MemberLayout,
-    layout: MemberLayout,
-    guard: MemberGuard,
+    layout: PrivateLayout,
+    path: RoutesString.Home,
+    guard: Guard,
     routes: [
       {
         path: RoutesString.Home,
-        page: HomePage,
+        page: TimebarPage,
+        exact: true
+      },
+      {
+        path: RoutesString.Timebar,
+        page: TimebarPage,
         exact: true
       },
       {
