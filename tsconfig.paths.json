@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-      "baseUrl": "./",
-      "paths": {
-        "@/stores": ["src/stores"],
-        "@/*": ["src/*"]
-      }
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/stores": ["src/stores"],
+      "@/*": ["src/*"]
     }
+  }
 }
