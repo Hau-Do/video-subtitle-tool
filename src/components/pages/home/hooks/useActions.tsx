@@ -44,7 +44,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
       lastIdx.current = defaultSubtitles.length;
       ctx && drawBG(ctx);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultSubtitles]);
 
   const playerRef = useRef<HTMLVideoElement | null>(null);
@@ -55,7 +55,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
   const elementList = useRef<IElement[]>([]);
   const requestRef = useRef<number>(-1);
   const can = useRef<HTMLCanvasElement>(null);
-  let centerX = 300;
+  let centerX = window.innerWidth / 2;
   let closeEnough = 10;
   let w = window.innerWidth;
   let h = 200;
@@ -349,7 +349,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     };
 
     init();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerRef]);
 
   const handlePlayerReady = (player: HTMLVideoElement) => {
@@ -407,7 +407,7 @@ const useActions = ({ defaultSubtitles = [] }: IUseActionsProps) => {
     return () => {
       requestRef.current && cancelAnimationFrame(requestRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying]);
 
   return {

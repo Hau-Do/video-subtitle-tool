@@ -32,7 +32,7 @@
     "zustand": "^4.1.1"
   },
   "scripts": {
-    "start": "nodemon -w craco.config.js -w ./src/theme/vars.scss -w ./src/theme/vars.less --exec \"craco start --config craco.config.js\"",
+    "start": "craco start",
     "build": "craco build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
@@ -65,7 +65,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.10",
     "lint-staged": "^13.0.3",
-    "nodemon": "^2.0.20",
     "source-map-explorer": "^2.5.3"
   },
   "husky": {
