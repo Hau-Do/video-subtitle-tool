@@ -30,8 +30,9 @@
     "start": "craco start",
     "build": "craco build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "coverage": "yarn test -- --coverage ."
   },
   "eslintConfig": {
     "extends": [
