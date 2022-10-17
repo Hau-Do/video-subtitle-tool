@@ -1,15 +1,15 @@
-import React, { Fragment, Suspense } from 'react';
-import { IRoutes } from './Routes.d';
-import { Switch, Route } from 'react-router-dom';
-import { routesConfig } from './routesConfig';
-const renderRoutes: Function = (routes: IRoutes[]) => {
+import React, { Fragment, Suspense } from 'react'
+import { IRoutes } from './Routes.d'
+import { Switch, Route } from 'react-router-dom'
+import { routesConfig } from './routesConfig'
+const renderRoutes = (routes: IRoutes[]) => {
   return (
     <Switch>
       {routes &&
         routes.map((route: IRoutes, idx: number) => {
-          const Layout = route.layout || Fragment;
-          const Guard = route.guard || Fragment;
-          const Component = route?.page || Fragment;
+          const Layout = route.layout || Fragment
+          const Guard = route.guard || Fragment
+          const Component = route?.page || Fragment
           return (
             <Route
               key={`routes-${idx}`}
@@ -27,11 +27,11 @@ const renderRoutes: Function = (routes: IRoutes[]) => {
                 </Guard>
               )}
             />
-          );
+          )
         })}
     </Switch>
-  );
-};
+  )
+}
 
 function Routes() {
   return (
@@ -42,7 +42,7 @@ function Routes() {
         </Suspense>
       )}
     />
-  );
+  )
 }
 
-export default Routes;
+export default Routes
