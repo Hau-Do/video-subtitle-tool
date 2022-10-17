@@ -11,7 +11,7 @@ const rawVar = fs.readFileSync(
 
 const vars = rawVar
   .split("\r\n")
-  .filter((line) => line.length > 0)
+  .filter((line) => line.length > 0 && !line.startsWith('//'))
   .map((line) => line.split(": "))
   .map(([key, value]) => ({
     key: key.replace("$", "@"),
