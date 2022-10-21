@@ -11,10 +11,9 @@ const rawVar = fs.readFileSync(
 );
 
 const vars = rawVar
-  .replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
-  .split('\n')
-  .filter((line) => line.length > 0)
-  .map((line) => line.split(': '))
+  .split("\r\n")
+  .filter((line) => line.length > 0 && !line.startsWith('//'))
+  .map((line) => line.split(": "))
   .map(([key, value]) => ({
     key: key.replace('$', '@'),
     value: value.replace(';', ''),

@@ -1,6 +1,8 @@
 export const RoutesString = {
-  MemberLayout: '/',
-  AnonymousLayout: '/auth',
   Home: '/',
+  Timebar: '/timebar',
   Translator: '/translator',
-};
+  Error: '/error',
+  NotFound: '/error/not-found',
+  AccessDenied: '/error/access-denied'
+}
