@@ -72,6 +72,22 @@
       "pre-commit": "yarn lint && yarn format"
     }
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/components/**/*.{tsx,ts}",
+      "!**/node_modules/**",
+      "!**/src/test-utils/**",
+      "!**/src/index.tsx",
+      "!**/src/App.tsx"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 60,
+        "functions": 60,
+        "lines": 60
+      }
+    }
+  },
   "lint-staged": {
     "*.+(js|ts|tsx|jsx)": "eslint --fix",
     "*.+(json|css|md)": "prettier --write"
