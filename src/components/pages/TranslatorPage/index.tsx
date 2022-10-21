@@ -1,7 +1,7 @@
-import VideoPlayer from 'components/atoms/videoPlayer';
-import Subtitle from 'components/molecules/subtitle';
+import { VideoPlayer } from 'components/atoms';
+import Subtitle from 'components/molecules/Subtitle';
 import useActions from './hooks/useActions';
-import translatorStyles from './translator.module.scss';
+import translatorStyles from './Translator.module.scss';
 function TranslatorPage() {
   const { subtitles, handleChangeSubtitle, handlePlayerReady } = useActions();
   const renderSubtitles = () =>

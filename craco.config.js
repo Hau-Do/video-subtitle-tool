@@ -7,10 +7,9 @@ const path = require('path')
 const rawVar = fs.readFileSync(path.join(__dirname, 'src/theme/vars.scss'), 'utf8')
 
 const vars = rawVar
-  .replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '')
-  .split('\n')
-  .filter((line) => line.length > 0)
-  .map((line) => line.split(': '))
+  .split("\r\n")
+  .filter((line) => line.length > 0 && !line.startsWith('//'))
+  .map((line) => line.split(": "))
   .map(([key, value]) => ({
     key: key.replace('$', '@'),
     value: value.replace(';', '')

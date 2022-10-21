@@ -1,12 +1,12 @@
-import stylesHome from './home.module.scss';
+import stylesTimebar from './Timebar.module.scss';
 import useActions from './hooks/useActions';
-import VideoPlayer from 'components/atoms/videoPlayer';
 import useVideoStore from 'stores/video.store';
 import { useEffect } from 'react';
 import { Button } from 'antd';
-import SubtitleService from 'services/subtitle.service';
+import { VideoPlayer } from 'components/atoms';
+import SubtitleService from 'services/subtitle.service'
 
-function HomePage() {
+function TimebarPage() {
   const { subtitles, setVideoState } = useVideoStore((state) => state);
 
   useEffect(() => {
@@ -33,13 +33,13 @@ function HomePage() {
         type="vod"
         src="vod://27001:V125f19c7e6a0577ab92fc2262953fcca04ad38960d0c728ff255c2262953fcca04ad@A7D002E08A5793B083F3539917A6A68D3809?env=dev"
       />
-      <div className={stylesHome.wrap}>
+      <div className={stylesTimebar.wrap}>
         <div>
           <canvas ref={can} id="mycanvas"></canvas>
         </div>
       </div>
 
-      <div className={stylesHome.btns_container}>
+      <div className={stylesTimebar.btns_container}>
         <Button id="btn-subtitle" onClick={handleClickSubtitle}>
           Subtitle
         </Button>
@@ -56,4 +56,4 @@ function HomePage() {
   <li key={1}>second</li>
 </ul>;
 
-export default HomePage;
+export default TimebarPage;

@@ -32,7 +32,7 @@
     "zustand": "^4.1.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "nodemon -w craco.config.js -w ./src/theme/vars.scss -w ./src/theme/vars.less --exec \"craco start\"",
     "build": "craco build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
