@@ -1,3 +1,4 @@
+import React from 'react';
 import Routes from './routes';
 import '@webplayer/prismplayer-pc/dist/main.css';
 

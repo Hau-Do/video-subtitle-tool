@@ -65,7 +65,7 @@
     "spaced-comment": 0,
     "import/no-unresolved": 0,
     "@typescript-eslint/no-extra-semi": 0,
-    "semi": ["warn", "never"]
+    "semi": 0
     // End temporary rules
   }
 }
