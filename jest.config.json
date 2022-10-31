@@ -1,0 +1,26 @@
+{
+  "moduleDirectories": ["src", "node_modules"],
+  "testEnvironment": "jsdom",
+  "roots": ["<rootDir>/src"],
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "src/**/*.{tsx,ts}",
+    "!**/node_modules/**",
+    "!**/src/test-utils/**",
+    "!**/src/index.tsx",
+    "!**/src/**/*.d.ts"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"],
+  "coverageThreshold": {
+    "*/**": {
+      "branches": 60,
+      "functions": 60,
+      "lines": 60,
+      "statements": 60
+    }
+  },
+  "moduleNameMapper": {
+    "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+    "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+  }
+}

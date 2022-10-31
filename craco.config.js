@@ -1,19 +1,15 @@
 const CracoAlias = require('craco-alias');
 const CracoAntDesignPlugin = require('craco-antd');
 
-
 const fs = require('fs');
 const path = require('path');
 
-const rawVar = fs.readFileSync(
-  path.join(__dirname, 'src/theme/vars.scss'),
-  'utf8'
-);
+const rawVar = fs.readFileSync(path.join(__dirname, 'src/theme/vars.scss'), 'utf8');
 
 const vars = rawVar
-  .split("\r\n")
+  .split('\r\n')
   .filter((line) => line.length > 0 && !line.startsWith('//'))
-  .map((line) => line.split(": "))
+  .map((line) => line.split(': '))
   .map(([key, value]) => ({
     key: key.replace('$', '@'),
     value: value.replace(';', ''),
